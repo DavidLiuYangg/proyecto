@@ -13,61 +13,66 @@ class Conjuntos:
     
 class Libros(Conjuntos):    
     def llegeix_dades(self):
-        with open("books.csv", "r", encoding = 'utf-8') as csv_file:
+        with open("books.csv", "r", encoding = 'utf-8') as csv_file: #271360 libros
             csvreader = csv.reader(csv_file)
             fields = next(csvreader)
-            dicc_books = dict()
-            dicc_val_ini = dict()
+            llibres = []
+            indices = []
             for row in csvreader:   
-                dicc_val_ini[row[0]] = 0
-                dicc_books[row[0]] = Llibre(row[0], row[1], row[2])
+                indices.append(row[0])
+                llibre = Llibre(row[0], row[1], row[2])
+                llibres.append(llibre)
         
-        self._datos = dicc_books
-        columnas = len(self._datos)
+        '''
+        with open("booksUsers.csv", "r", encoding = 'utf-8') as csv_file: #278858 users
+            csvreader = csv.reader(csv_file)
+            fields = next(csvreader)
+            user = []
+            
+            for row in csvreader: 
+                userId = row[0]
+                user.append(userId)
+        '''
+        
+        matriz = np.empty((278858, 271360), dtype='float16')
         
         with open("booksRatings.csv", "r", encoding = 'utf-8') as csv_file:
             csvreader = csv.reader(csv_file)
             fields = next(csvreader)
-            m_valor = np.array(0)
-            usuarios = []
+        
             for row in csvreader:
-                usuari = row[0]
-                if usuari not in usuarios: 
-                    m_valor = np.append(m_valor, np.zeros(columnas))
-                peli, valoracion = row[1], row[2]
-                m_valor[usuari-1][peli-1] = valoracion
-        return dicc_books, m_valor
-
+                fila = int(row[0])
+                columna = indices.index(row[1])
+                matriz[fila-1, columna] = float(row[2])
+                
+        return llibres, matriz
+        
 def Anime(Conjuntos): 
     def llegeix_dades(self): 
         pass
     
 class Movies(Conjuntos):
     def llegeix_dades(self): 
-        with open("movies.csv", "r", encoding='utf-8') as csv_file: 
+        with open("movies.csv", "r", encoding='utf-8') as csv_file: #9742 pelis
             csvreader = csv.reader(csv_file)
             fields = next(csvreader)
-            dicc_movies = dict()
-            i = 0
+            movies = []
+            indices = []
+            
             for row in csvreader: 
+                indices.append(row[0])
                 peli = Movie(row[0], row[1], row[2].split("|")) 
-                dicc_movies[row[0]] = (peli, i)
-                i+=1
-
-        with open("moviesRatings.csv", "r", encoding = 'utf-8') as csv_file:
-            columnas = len(dicc_movies.keys())
-            matriz = np.empty((0, columnas))
-            usuarios = []
-
+                movies.append(peli)
+        
+        matriz = np.empty((610, 9742), dtype='float32')
+        
+        with open("moviesRatings.csv", "r", encoding = 'utf-8') as csv_file: #610 users
             csvreader = csv.reader(csv_file)
-            fields = next(csvreader)            
+            fields = next(csvreader)    
+            
             for row in csvreader:
-                usuario = int(row[0])
-                if usuario not in usuarios: 
-                    usuarios.append(usuario)
-                    ceros = np.zeros((1, columnas), dtype='float32')
-                    matriz = np.append(matriz, ceros, axis=0)
-                    
-                peli, valoracion = dicc_movies[row[1]][1], float(row[2])
-                matriz[usuario-1, peli] = valoracion
-        return dicc_movies, matriz
+                fila = int(row[0])
+                columna = indices.index(row[1])
+                matriz[fila-1, columna] = float(row[2])
+                
+        return movies, matriz
