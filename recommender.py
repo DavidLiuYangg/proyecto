@@ -8,12 +8,10 @@ class Recommender:
     
     def __init__(self): 
         self._dicc_datasets = {"Pelis": Movies, "Libros": Books}
-        self._matriz_valoraciones: np.ndarray() = np.empty(0)
-        #self._ll_elementos: list = []
-        self._ll_elementos: np.ndarray() = np.empty(0)
         
-        #self._ll_index_recomendaciones: list = []
-        self._recomendaciones: list = []    
+        self._matriz_valoraciones: np.ndarray() = np.empty(0)
+        self._ll_elementos: np.ndarray() = np.empty(0) #Cambiar el nombre de self._ll_elementos
+        self._recomendaciones: list = [] #list(Movie, float) or list(Book, float)?   
     
     @abc.abstractclassmethod
     def recomendar(self): 
@@ -30,6 +28,3 @@ class Recommender:
         for i in range(numero): 
             recomendacion = self._recomendaciones[i]
             print(recomendacion[0])
-            
-    def mostrar_usuario(self, user): #Faltan detalles
-        print(self._matriz_valoraciones[user]) 

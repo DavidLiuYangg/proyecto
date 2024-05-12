@@ -45,7 +45,8 @@ try:
         
         with open(nom_arxiu, 'wb') as fitxer:
             pickle.dump(r, fitxer)
-        
+            
+    '''
     continuar = True
     
     while continuar == True: 
@@ -61,7 +62,8 @@ try:
         else: 
             logging.info("SORTINT")
             continuar = False
-        
+    '''
+    
 finally: 
     #Logging close
     logger.handlers.clear()
