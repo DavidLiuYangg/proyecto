@@ -48,21 +48,18 @@ try:
             
     continuar = True
     
-    '''
     while continuar == True: 
         accion = input("Introdueix la acció a fer: ")
 
         if accion == "Recomanació": 
             user_ID = int(input("Introdueix el número del USER: "))
             r.recomendar(user_ID)
-            r.mostrar_recomendaciones()
             
         elif accion == "Comparació": 
             pass
         else: 
             logging.info("SORTINT")
             continuar = False
-    '''
     
 finally: 
     #Logging close

@@ -16,7 +16,7 @@ class Colaborativo(Recommender):
         distancias = np.empty(0)
         indices = np.empty(0)
         
-        for i in self._matriz_valoraciones.shape[0]: 
+        for i in range(self._matriz_valoraciones.shape[0]): 
             if i != user-1: 
                 filtro_comun = (fila_user != 0)*(self._matriz_valoraciones[i] != 0)
                 if filtro_comun.sum() != 0: 
@@ -26,32 +26,40 @@ class Colaborativo(Recommender):
                     distancias = np.append(distancias, numerador / denominador)
                     indices = np.append(indices, i)
                 else: 
-                    logging.info("No hi ha elements en comun amb l'usuari %d", i+1)
+                    pass
+                    #logging.info("No hi ha elements en comun amb l'usuari %d", i+1)
         
         return sorted(zip(indices, distancias), key=lambda x: x[1], reverse=True)[0:k]
         
     def calcular_usuarios(self, k_usuarios: list):
         
-        usuarios = [a[0] for a in k_usuarios]
+        usuarios = [int(a[0]) for a in k_usuarios]
         distancias_ord = np.array([a[1] for a in k_usuarios])
         
         return usuarios, distancias_ord
         
     def calcular_scores(self, user: int, fila_user: np.ndarray, filtro_no_puntuados: np.ndarray): 
         
-        k_usuarios = self._calcular_distancias(user, fila_user)
-        usuarios, distancias_ord = self._calcular_usuarios(k_usuarios)
+        k_usuarios = self.calcular_distancias(user, fila_user)
+        usuarios, distancias_ord = self.calcular_usuarios(k_usuarios)
         
-        matriz_usuarios = self._matriz_valoraciones[[usuarios]]
+        logging.debug("Indices usuarios similares: {}".format(usuarios))
+        
+        matriz_usuarios = self._matriz_valoraciones[usuarios]
+        logging.debug("Shape matriz k usuarios: {}".format(matriz_usuarios.shape))
 
-        mu_user = fila_user[filtro_no_puntuados].sum()/filtro_no_puntuados.sum()
+
+        mu_user = fila_user.sum()/(fila_user != 0).sum()
         mu_usuarios = matriz_usuarios.sum(axis=1)/(matriz_usuarios != 0).sum(axis=1)
         matriz_usuarios_filtro = matriz_usuarios[:, filtro_no_puntuados]
+        logging.debug("MU user: {}".format(mu_user))
+        logging.debug("MU users: {}".format(mu_usuarios))
+        logging.debug("Distancias: {}".format(distancias_ord))
         
         scores = np.empty(0)
         
-        for j in matriz_usuarios_filtro.shape[1]:
-            columna = matriz_usuarios[:, j]
+        for j in range(matriz_usuarios_filtro.shape[1]):
+            columna = matriz_usuarios_filtro[:, j]
             score = mu_user + ((columna - mu_usuarios)*distancias_ord).sum()/distancias_ord.sum()
             scores = np.append(scores, score)
         
