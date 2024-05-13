@@ -9,7 +9,7 @@ from contenido import Contenido
 
 #Logging setup
 logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 fecha = date.today().strftime("%Y%m%d")
 formato = logging.Formatter('%(levelname)s - %(name)s: %(message)s')

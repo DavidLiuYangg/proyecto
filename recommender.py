@@ -19,12 +19,15 @@ class Recommender:
         
     def cargar_datos(self, tipo: str): 
 
-        logging.info("Tipus de dataset " + tipo)
+        #logging.info("Tipus de dataset: " + tipo)
         dataset = self._dicc_datasets[tipo]()
         self._matriz_valoraciones, self._ll_elementos = dataset.leer_datos()
+        
+        logging.debug("Shape matriz valoraciones: {}".format(self._matriz_valoraciones.shape))
+        logging.debug("Número de items: {}".format(len(self._ll_elementos)))
         
     def mostrar_recomendaciones(self, numero: int = 5): 
         
         for i in range(numero): 
             recomendacion = self._recomendaciones[i]
-            print(recomendacion[0])
+            print(recomendacion[1], recomendacion[0])

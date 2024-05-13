@@ -5,7 +5,6 @@ from conjuntos import Conjuntos
 
 class Movies(Conjuntos):
     def leer_datos(self): 
-        #ll_movies = []
         ll_movies = np.empty(0)
         ll_indices_id = []
         
@@ -34,6 +33,6 @@ class Movies(Conjuntos):
                     
                 num_fila = int(user)-1
                 num_columna = ll_indices_id.index(row[1])
-                matriz_valoraciones[num_fila, num_columna-1] = float(row[2])
+                matriz_valoraciones[num_fila, num_columna] = float(row[2])
                 
         return matriz_valoraciones, ll_movies

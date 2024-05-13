@@ -20,24 +20,28 @@ class Contenido(Recommender):
         self._tfidf_matrix = tfidf.fit_transform(item_features).toarray()
         
         # debug
-        logging.debug("Vocabulary: {}".format(tfidf.get_feature_names_out()))
-        logging.debug("Shape: {}".format(self._tfidf_matrix.shape))
+        logging.debug("Vocabulario: {}".format(tfidf.get_feature_names_out()))
+        logging.debug("Shape matriz TFIDF: {}".format(self._tfidf_matrix.shape))
         
     def cargar_datos(self, tipo: str): 
         super().cargar_datos(tipo)
         self.calcular_representacion_items()
     
     def calcular_perfil(self, fila_user: int): 
-        pass
+        perfil = np.dot(fila_user, self._tfidf_matrix)
+        return perfil/fila_user.sum()
     
     def calcular_distancia_cosinus(self, perfil_usuario: np.ndarray): 
-        pass
-    
+        #perfil_usuario_t = np.transpose([perfil_usuario])
+        similitud_items = np.dot(self._tfidf_matrix, perfil_usuario)
+        distancias_items = similitud_items/np.sqrt((perfil_usuario**2).sum()*(self._tfidf_matrix**2).sum(axis=1))
+        return distancias_items    
     
     def calcular_scores(self, user: int, fila_user: np.ndarray, filtro_no_puntuados: np.ndarray): 
         perfil_usuario = self.calcular_perfil(fila_user)
         distancias_items = self.calcular_distancia_cosinus(perfil_usuario)
-        
+        scores = distancias_items*self._matriz_valoraciones.max()
+        return scores
     
     def recomendar(self, user: int): 
        fila_user = self._matriz_valoraciones[user-1]
