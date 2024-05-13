@@ -5,6 +5,7 @@ from recommender import Recommender
 class Colaborativo(Recommender): 
     
     def __init__(self): 
+        super().__init__()
         self._metodo: str = "Colaborativo"
         logging.info("S'he ha creado un objecto de tipo recomendacion Colaborativo")
 

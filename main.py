@@ -46,9 +46,9 @@ try:
         with open(nom_arxiu, 'wb') as fitxer:
             pickle.dump(r, fitxer)
             
-    '''
     continuar = True
     
+    '''
     while continuar == True: 
         accion = input("Introdueix la acció a fer: ")
 

@@ -14,8 +14,7 @@ class Movies(Conjuntos):
             fields = next(csvreader)
             
             for row in csvreader: 
-                peli = Movie(row[0], row[1], row[2].split("|")) 
-                #ll_movies.append(peli)
+                peli = Movie(row[0], row[1], row[2]) 
                 ll_movies = np.append(ll_movies, peli)
                 ll_indices_id.append(row[0])
         
