@@ -2,13 +2,15 @@ import csv
 from movie import Movie
 import numpy as np 
 from conjuntos import Conjuntos
+import os
 
 class Movies(Conjuntos):
     def leer_datos(self): 
+        path = os.path.dirname(os.path.abspath(__file__)) + "\datast\MovieLens100k"
         ll_movies = np.empty(0)
         ll_indices_id = []
         
-        with open("movies.csv", "r", encoding='utf-8') as csv_file: 
+        with open(path + "movies.csv", "r", encoding='utf-8') as csv_file: 
             csvreader = csv.reader(csv_file)
             fields = next(csvreader)
             
@@ -20,7 +22,7 @@ class Movies(Conjuntos):
         matriz_valoraciones = np.empty((0, len(ll_movies)), dtype='float32')
         ll_users = []
         
-        with open("moviesRatings.csv", "r", encoding = 'utf-8') as csv_file: 
+        with open(path + "moviesRatings.csv", "r", encoding = 'utf-8') as csv_file: 
             csvreader = csv.reader(csv_file)
             fields = next(csvreader)    
             

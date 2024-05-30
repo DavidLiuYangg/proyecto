@@ -5,8 +5,8 @@ from recommender import Recommender
 class Colaborativo(Recommender): 
     
     def __init__(self): 
+        
         super().__init__()
-        self._metodo: str = "Colaborativo"
         logging.info("S'he ha creado un objecto de tipo recomendacion Colaborativo")
 
     def calcular_distancias(self, user: int, fila_user: np.ndarray) -> list: 
@@ -31,7 +31,7 @@ class Colaborativo(Recommender):
         
         return sorted(zip(indices, distancias), key=lambda x: x[1], reverse=True)[0:k]
         
-    def calcular_usuarios(self, k_usuarios: list):
+    def calcular_usuarios(self, k_usuarios: list) -> int:
         
         usuarios = [int(a[0]) for a in k_usuarios]
         distancias_ord = np.array([a[1] for a in k_usuarios])
@@ -52,6 +52,7 @@ class Colaborativo(Recommender):
         mu_user = fila_user.sum()/(fila_user != 0).sum()
         mu_usuarios = matriz_usuarios.sum(axis=1)/(matriz_usuarios != 0).sum(axis=1)
         matriz_usuarios_filtro = matriz_usuarios[:, filtro_no_puntuados]
+        
         logging.debug("MU user: {}".format(mu_user))
         logging.debug("MU users: {}".format(mu_usuarios))
         logging.debug("Distancias: {}".format(distancias_ord))

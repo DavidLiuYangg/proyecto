@@ -6,13 +6,15 @@ from datetime import date
 from simple import Simple
 from colaborativo import Colaborativo
 from contenido import Contenido
+import argparse as arg
+
 
 #Logging setup
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 fecha = date.today().strftime("%Y%m%d")
-formato = logging.Formatter('%(levelname)s - %(name)s: %(message)s')
+formato = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
 
 #file = logging.FileHandler('log_'+fecha+'.txt') #Modo añadir
 file = logging.FileHandler('log_'+fecha+'.txt', mode='w')
@@ -24,15 +26,25 @@ stream.setFormatter(formato)
 logger.addHandler(file)
 logger.addHandler(stream)
 
+#Argparser
+parser = arg.ArgumentParser(description="Recommender")
+parser.add_argument("--dataset", choices=["Books", "Movies"], type=str, help="Tipus de dataset Books/Movies")
+parser.add_argument("--method", choices=["Simple", "Colaborativo", "Contenido"], type=str, help="Tipus de recomanació Simple/Colaborativo/Contenido")
+
+args = parser.parse_args()
+
 #Carga de objecto
 try:
-    dicc_metodos = {"Simple": Simple, "Colaborativo": Colaborativo, "Contenido": Contenido}
+    dicc_metodos = {"1": Simple, "2": Colaborativo, "3": Contenido}
     
-    print(list(dicc_metodos.keys()))
+    dataset = args.dataset
+    metode = args.method
+    '''
+    dataset = input("Introdueix el tipus de dataset: ")    
+    print("1 - Simple\n2 - Colaborativo\n3 - Contenido")
     metode = input("Introdueix el tipo de recomendació: ")
-    dataset = input("Introdueix el tipus de dataset: ")
-    
-    nom_arxiu = 'recommender_' + str(dataset) + '_' + metode + '.dat'
+    '''
+    nom_arxiu = 'recommender_' + dataset + '_' + metode + '.dat'
     
     if os.path.isfile(nom_arxiu) == True: 
         logging.info("Existeix l'arxiu")
@@ -49,13 +61,13 @@ try:
     continuar = True
     
     while continuar == True: 
-        accion = input("Introdueix la acció a fer: ")
+        accion = input(" 1 - Recomanació\n 2 - Avaluació\n 3 - Sortir\nIntrodueix la acció a fer: ")
 
-        if accion == "Recomanació": 
+        if accion == "1": 
             user_ID = int(input("Introdueix el número del USER: "))
             r.recomendar(user_ID)
             
-        elif accion == "Comparació": 
+        elif accion == "2": 
             pass
         else: 
             logging.info("SORTINT")

@@ -11,7 +11,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 class Contenido(Recommender): 
     def __init__(self): 
         super().__init__()
-        self._metodo: str = "Contenido"
         self._tfidf_matrix = np.empty(0)
     
     def calcular_representacion_items(self): 

@@ -6,6 +6,9 @@ import logging
 from datetime import date
 from recommender import Recommender
 from sklearn.feature_extraction.text import TfidfVectorizer
+from movies import Movies
+from books import Books
+from movie import Movie
 
 
 def colab(m, items): 
@@ -98,3 +101,15 @@ def simple(m, items):
     for i in range(5): 
         print(orde[i][0], orde[i][1])
     
+    
+ll_movies = np.empty(0)
+ll_indices_id = []
+
+with open(os.path.dirname(os.path.abspath(__file__)) + "\dataset\MovieLens100k\movies.csv", "r", encoding='utf-8') as csv_file: 
+    csvreader = csv.reader(csv_file)
+    fields = next(csvreader)
+    
+    for row in csvreader: 
+        peli = Movie(row[0], row[1], row[2]) 
+        ll_movies = np.append(ll_movies, peli)
+        ll_indices_id.append(row[0])

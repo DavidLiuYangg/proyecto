@@ -3,21 +3,25 @@ import logging
 import abc
 from movies import Movies
 from books import Books
+from movie import Movie
+from book import Book
+
 
 class Recommender: 
     
     def __init__(self): 
         self._dicc_datasets = {"Pelis": Movies, "Libros": Books}
         
-        self._matriz_valoraciones: np.ndarray() = np.empty(0)
-        self._ll_elementos: np.ndarray() = np.empty(0) #Cambiar el nombre de self._ll_elementos
-        self._recomendaciones: list = [] #list(Movie, float) or list(Book, float)?   
+        self._matriz_valoraciones: np.ndarray = np.empty(0)
+        self._ll_elementos: np.ndarray = np.empty(0) 
+        self._recomendaciones: list[Movie or Book, float] = [] #list(Movie, float) or list(Book, float)?   
     
     @abc.abstractclassmethod
-    def recomendar(self): 
+    def recomendar(self, user:int): 
         raise NotImplementedError
         
     def cargar_datos(self, tipo: str): 
+        
         dataset = self._dicc_datasets[tipo]()
         self._matriz_valoraciones, self._ll_elementos = dataset.leer_datos()
         

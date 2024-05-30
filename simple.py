@@ -33,14 +33,14 @@ class Simple(Recommender):
         self._ll_elementos = self._ll_elementos[filtro_min_votos]
         self._matriz_valoraciones = self._matriz_valoraciones[:, filtro_min_votos]
         logging.debug("Nuevo número de items: {}".format(len(self._ll_elementos)))
-        logging.debug("Nueva shape de la matriz de valoraciones: {}".format(self._ll_elementos.shape))
+        logging.debug("Nueva shape de la matriz de valoraciones: {}".format(self._matriz_valoraciones.shape))
         
     def cargar_datos(self, tipo: str):
         
         super().cargar_datos(tipo)
         self.calcular_avg_i_votos()
         
-    def calcular_scores(self, avg_item: np.ndarray, num_vots: np.ndarray, filtro_no_puntuados: np.ndarray): 
+    def calcular_scores(self, avg_item: np.ndarray, num_vots: np.ndarray, filtro_no_puntuados: np.ndarray) -> np.ndarray: 
         
         termino1 = num_vots[filtro_no_puntuados]*avg_item[filtro_no_puntuados]/(num_vots[filtro_no_puntuados]+self._min_votos)
         termino2 = (self._min_votos*self._avg_global)/(num_vots[filtro_no_puntuados]+self._min_votos)    
