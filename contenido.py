@@ -1,26 +1,42 @@
-import csv
 import numpy as np 
-import pickle 
-import os.path
 import logging 
-from datetime import date
-import abc
-from recommender import Recommender
+from scoring import Scoring
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-class Contenido(Recommender): 
+class Contenido(Scoring): 
     def __init__(self): 
         super().__init__()
         self._tfidf_matrix = np.empty(0)
+        logging.debug("Se ha creado un objecto tipo {}".format(type(self)))
+
+    def es_puntuable(self, tipus: str) -> bool:
+        return "Movies" != tipus
     
     def calcular_representacion_items(self): 
-        item_features = [peli.generos for peli in self._ll_elementos]
+        item_features = [peli.generos for peli in self._dataset.elementos]
         tfidf = TfidfVectorizer(stop_words='english')
         self._tfidf_matrix = tfidf.fit_transform(item_features).toarray()
+
+
+        logging.debug("Vocabulario: {}".format(tfidf.get_feature_names_out()))
+        logging.debug("Shape matriz TFIDF: {}".format(self._tfidf_matrix.shape))
+    
+    def inicialitzar(self, dataset: str): 
+        super().inicialitzar(dataset)
+        self.calcular_representacion_items()
+        
+    
+    '''
+    def calcular(self,dataset):
+        return dataset
+    def calcular_scores(self,dataset,filtro_no_puntuados,usuarios): 
+        item_features = [peli.generos for peli in dataset._matriz_elementos]
+        tfidf = TfidfVectorizer(stop_words='english')
+        tfidf_matrix = tfidf.fit_transform(item_features).toarray()
         
         # debug
         logging.debug("Vocabulario: {}".format(tfidf.get_feature_names_out()))
-        logging.debug("Shape matriz TFIDF: {}".format(self._tfidf_matrix.shape))
+        logging.debug("Shape matriz TFIDF: {}".format(tfidf_matrix.shape))
         
     def cargar_datos(self, tipo: str): 
         super().cargar_datos(tipo)
@@ -57,5 +73,5 @@ class Contenido(Recommender):
            
        else: 
            logging.info("No es pot recomanar a l'usuari")
-           
+     '''
            
