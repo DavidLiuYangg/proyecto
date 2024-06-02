@@ -28,7 +28,7 @@ class Books(Conjuntos):
             users = []
             
             for i, row in enumerate(csvreader): 
-                if i < 50000:
+                if i < 10000:
                     userId = row[0]
                     users.append(userId)
         
@@ -53,7 +53,7 @@ class Books(Conjuntos):
                     
                     
         self._matriz_valoraciones, self._matriz_elementos = matriz_valoraciones, matriz_elementos
-        logging.info("Shape de matriz valoraciones (usuariosXitems): {}".format(self._matriz_valoraciones.shape()))
+        logging.info("Shape de matriz valoraciones (usuariosXitems): {}".format(self._matriz_valoraciones.shape))
         logging.info("Número de items: {}".format(len(self._matriz_elementos)))
         
         

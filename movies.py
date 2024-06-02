@@ -10,7 +10,7 @@ class Movies(Conjuntos):
     def __init__(self): 
         super().__init__()
 
-    def cargar_datos(self, metode: str): 
+    def cargar_datos(self): 
         path = os.path.dirname(os.path.abspath(__file__)) + "\\dataset\\MovieLens100k"
         matriz_elementos = np.empty(0)
         ll_indices_id = []

@@ -43,6 +43,8 @@ args = parser.parse_args()
 dataset = str(args.dataset)
 metode = str(args.method)
 
+#Parser con misma palabra, diferente formato (?) Error
+
 try: 
     nom_arxiu = 'recommender_' + dataset + '_' + metode + '.dat'
     
@@ -53,15 +55,23 @@ try:
     else: 
         logging.info("No existeix l'arxiu " + nom_arxiu)
         rs = Recommender_system()
-        puntuable = rs.inicialitzar(dataset, metode)
+        rs.inicialitzar(dataset, metode)
         
         with open(nom_arxiu, 'wb') as fitxer:
             pickle.dump(rs, fitxer)
+            
+    puntuable = rs.puntuable
+    logging.info("El dataset {} es puntuable con el método {}: {}".format(dataset, metode, puntuable))
+    
     
     while puntuable == True: 
         continuar = rs.ejecutar()
     else: 
         logging.info("SORTINT")
+
+    
+except Exception as error: 
+    logging.error(error)
 
 finally: 
     logging.shutdown()
