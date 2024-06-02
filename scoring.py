@@ -25,9 +25,10 @@ class Scoring(abc.ABC):
     def calcular_scores(self, dataset: Conjuntos, fila_num_user: int, es_cero:int) -> np.ndarray: 
         if es_cero == 0:
             filtro_a_puntuar = dataset.get_fila_user(fila_num_user) == 0
+            logging.info("El usuario no ha puntuado {} items".format(filtro_a_puntuar.sum()))
         else: 
             filtro_a_puntuar = dataset.get_fila_user(fila_num_user) != 0
-        logging.info("El usuario no ha puntuado {} items".format(filtro_a_puntuar.sum()))
+            logging.info("El usuario ha puntuado {} items".format(filtro_a_puntuar.sum()))
         return filtro_a_puntuar
         assert filtro_a_puntuar.sum() != 0, "No se puede recomendar al usuario"  
        
