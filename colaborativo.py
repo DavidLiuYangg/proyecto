@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun May 12 13:58:58 2024
+
+@author: david
+"""
 import numpy as np 
 import logging 
 from scoring import Scoring
@@ -33,8 +39,9 @@ class Colaborativo(Scoring):
         
         return usuarios, distancias_ord
         
-    def calcular_scores(self, dataset: Conjuntos, fila_num_user: int):
-        filtro_a_puntuar = super().calcular_scores(dataset, fila_num_user)
+    def calcular_scores(self, dataset: Conjuntos, fila_num_user: int, es_cero: int):
+        filtro_a_puntuar = super().calcular_scores(dataset, fila_num_user, es_cero)
+        
         
         fila_user = dataset.get_fila_user(fila_num_user)
         
@@ -63,4 +70,3 @@ class Colaborativo(Scoring):
             scores = np.append(scores, score)
         
         return scores, filtro_a_puntuar
-    

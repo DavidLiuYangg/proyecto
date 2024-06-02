@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Apr 16 20:09:01 2024
+
+@author: david
+"""
+
 import abc
 import numpy as np
 import logging
@@ -21,7 +28,6 @@ class Conjuntos(abc.ABC):
     
     def get_elementos_filtro(self, filtro_a_puntuar: np.ndarray): 
         return self._matriz_elementos[filtro_a_puntuar] 
-    
     
     def get_matriz_valoraciones(self): 
         return self._matriz_valoraciones

@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Jun  2 15:01:25 2024
+
+@author: david
+"""
+
 from movies import Movies
 from books import Books
 from scoring import Scoring
@@ -31,9 +38,9 @@ class Recommender_system:
         logging.info("\n 1 - Recomendar\n 2 - Evaluar")
         
     def ejecutar(self) -> bool:
-        self.mostrar_opciones()
         #user_id = int(input("User_ID: "))
         num_fila_user = int(input("User_ID: ")) - 1
+        self.mostrar_opciones()
         accion = int(input("Introduce una acción: "))
         continuar = True
         

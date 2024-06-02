@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Apr 16 20:09:30 2024
+
+@author: david
+"""
 class Movie: 
     def __init__(self, peli_id: int, titol: str, generos: list): 
         self._id = peli_id
@@ -21,4 +27,3 @@ class Movie:
     ID = property(get_id)
     titol = property(get_titol)
     generos = property(get_generos)
-    

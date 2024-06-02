@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun May 12 13:59:09 2024
+
+@author: david
+"""
 from scoring import Scoring
 from conjuntos import Conjuntos
 import numpy as np 
@@ -30,8 +36,9 @@ class Contenido(Scoring):
         distancias_items = similitud_items/np.sqrt((perfil_usuario**2).sum()*(self._tfidf_matrix**2).sum(axis=1))
         return distancias_items    
     
-    def calcular_scores(self, dataset: Conjuntos, fila_num_user: int):
-        filtro_no_puntuados = super().calcular_scores(dataset, fila_num_user)
+    def calcular_scores(self, dataset: Conjuntos, fila_num_user: int, es_cero):
+        filtro_no_puntuados = super().calcular_scores(dataset, fila_num_user,es_cero )
+        
         fila_user = dataset.get_fila_user(fila_num_user)
         perfil_usuario = self.calcular_perfil(fila_user)
         distancias_items = self.calcular_distancia_cosinus(perfil_usuario)

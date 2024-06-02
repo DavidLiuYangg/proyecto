@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Jun  2 15:00:56 2024
+
+@author: david
+"""
+
 import csv
 from movie import Movie
 import numpy as np 
@@ -45,5 +52,4 @@ class Movies(Conjuntos):
         self._matriz_valoraciones, self._matriz_elementos = matriz_valoraciones, matriz_elementos
         logging.info("Shape de matriz valoraciones (usuariosXitems): {}".format(self._matriz_valoraciones.shape))
         logging.info("Número de items: {}".format(len(self._matriz_elementos)))
-        
         

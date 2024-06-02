@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun May 12 13:58:35 2024
+
+@author: david
+"""
+
 import csv
 from book import Book
 import numpy as np 

@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun May 12 14:01:04 2024
+
+@author: david
+"""
 from scoring import Scoring
 from conjuntos import Conjuntos
 import numpy as np 
@@ -39,18 +45,11 @@ class Simple(Scoring):
         
 
     #Dependiente de usuario
-    def calcular_scores(self, dataset: Conjuntos, fila_num_user: int):
-        filtro_a_puntuar = super().calcular_scores(dataset, fila_num_user)
+    def calcular_scores(self, dataset: Conjuntos, fila_num_user: int, es_cero):
+        filtro_a_puntuar = super().calcular_scores(dataset, fila_num_user, es_cero)
+        
         avg_items, num_votos = self._avg_num_votos[0], self._avg_num_votos[1] 
         
         termino1 = num_votos[filtro_a_puntuar]*avg_items[filtro_a_puntuar]/(num_votos[filtro_a_puntuar]+self._min_votos)
         termino2 = (self._min_votos*self._avg_global)/(num_votos[filtro_a_puntuar]+self._min_votos)    
         return termino1 + termino2, filtro_a_puntuar
-        
-
-    
-        
-        
-        
-    
-

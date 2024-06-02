@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Apr 16 20:09:14 2024
+
+@author: david
+"""
 class Book:
     def __init__(self, isbn: str, titulo: str, autor: str, year: str, editorial: str):
         self._isbn = isbn
@@ -29,4 +35,3 @@ class Book:
     editorial = property(get_editorial)
     
     #Faltan getters
-    
