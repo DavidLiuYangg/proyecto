@@ -1,73 +1,45 @@
-import csv
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Apr 16 20:09:01 2024
+
+@author: david
+"""
+
 import abc
-from llibre import Llibre
-from movie import Movie
-from usuari import Usuari
-import numpy as np 
+import numpy as np
+import logging
 
-
-class Conjuntos: 
+class Conjuntos(abc.ABC): 
+    def __init__(self): 
+        self._matriz_valoraciones: np.ndarray = np.empty(0)
+        self._matriz_elementos: np.ndarray = np.empty(0) 
+        #self._tipus: str = tipus
+        logging.info("Se ha creado un objecto tipo {}".format(type(self)))
+        
     @abc.abstractmethod 
-    def llegeix_dades(self): 
-        raise NotImplementedError    
+    def cargar_datos(self): 
+        raise NotImplementedError 
     
-class Libros(Conjuntos):    
-    def llegeix_dades(self):
-        with open("books.csv", "r", encoding = 'utf-8') as csv_file:
-            csvreader = csv.reader(csv_file)
-            fields = next(csvreader)
-            dicc_books = dict()
-            dicc_val_ini = dict()
-            for row in csvreader:   
-                dicc_val_ini[row[0]] = 0
-                dicc_books[row[0]] = Llibre(row[0], row[1], row[2])
-        
-        self._datos = dicc_books
-        columnas = len(self._datos)
-        
-        with open("booksRatings.csv", "r", encoding = 'utf-8') as csv_file:
-            csvreader = csv.reader(csv_file)
-            fields = next(csvreader)
-            m_valor = np.array(0)
-            usuarios = []
-            for row in csvreader:
-                usuari = row[0]
-                if usuari not in usuarios: 
-                    m_valor = np.append(m_valor, np.zeros(columnas))
-                peli, valoracion = row[1], row[2]
-                m_valor[usuari-1][peli-1] = valoracion
-        return dicc_books, m_valor
-
-def Anime(Conjuntos): 
-    def llegeix_dades(self): 
-        pass
+    def existe_usuario(self, num_fila_user: int) -> bool:
+        return 0 <= num_fila_user < self._matriz_valoraciones.shape[0] 
     
-class Movies(Conjuntos):
-    def llegeix_dades(self): 
-        with open("movies.csv", "r", encoding='utf-8') as csv_file: 
-            csvreader = csv.reader(csv_file)
-            fields = next(csvreader)
-            dicc_movies = dict()
-            i = 0
-            for row in csvreader: 
-                peli = Movie(row[0], row[1], row[2].split("|")) 
-                dicc_movies[row[0]] = (peli, i)
-                i+=1
+    def get_fila_user(self, fila_num_user: int) -> np.ndarray: 
+        return self._matriz_valoraciones[fila_num_user]  
+    
+    def get_elementos_filtro(self, filtro_a_puntuar: np.ndarray): 
+        return self._matriz_elementos[filtro_a_puntuar] 
+    
+    def get_matriz_valoraciones(self): 
+        return self._matriz_valoraciones
+    def set_matriz_valoraciones(self, nueva_matriz_valoraciones: np.ndarray): 
+        self._matriz_valoraciones = nueva_matriz_valoraciones
+    
+    def get_matriz_elementos(self): 
+        return self._matriz_elementos
+    def set_matriz_elementos(self, nueva_matriz_elementos: np.ndarray): 
+        self._matriz_elementos = nueva_matriz_elementos
 
-        with open("moviesRatings.csv", "r", encoding = 'utf-8') as csv_file:
-            columnas = len(dicc_movies.keys())
-            matriz = np.empty((0, columnas))
-            usuarios = []
-
-            csvreader = csv.reader(csv_file)
-            fields = next(csvreader)            
-            for row in csvreader:
-                usuario = int(row[0])
-                if usuario not in usuarios: 
-                    usuarios.append(usuario)
-                    ceros = np.zeros((1, columnas), dtype='float32')
-                    matriz = np.append(matriz, ceros, axis=0)
-                    
-                peli, valoracion = dicc_movies[row[1]][1], float(row[2])
-                matriz[usuario-1, peli] = valoracion
-        return dicc_movies, matriz
+    valoraciones = property(get_matriz_valoraciones, set_matriz_valoraciones)
+    elementos = property(get_matriz_elementos, set_matriz_elementos)
+        
+    
