@@ -55,7 +55,7 @@ class Recommender_system:
                 e.get_evaluation(self._scoring, self._dataset, num_fila_user)
             else:
                 continuar = False
-        except AssertionError as error: 
+        except (ValueError, AssertionError) as error: 
             logging.error(error)
         finally: 
             return continuar
