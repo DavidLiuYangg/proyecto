@@ -16,21 +16,22 @@ class Evaluator():
         puntuaciones_sist, filtro_puntuados = scoring.calcular_scores(dataset, fila_num_user, 1)
         puntuaciones_user = dataset.get_fila_user(fila_num_user)[filtro_puntuados]
         peliculas = dataset.get_elementos_filtro(filtro_puntuados)
-        elementos_sist = sorted(zip(peliculas, puntuaciones_sist), key=lambda x: x[1], reverse=True)
-        elementos_user = sorted(zip(peliculas, puntuaciones_user), key=lambda x: x[1], reverse=True)
         
-        logging.info("==>\nSistema:\n{}".format(self.mostrar_elementos(elementos_sist)))
+        elementos_sist_user = sorted(zip(peliculas, puntuaciones_sist,puntuaciones_user), key=lambda x: x[1], reverse=True)
+        elementos_user = [(x[0], x[2]) for x in elementos_sist_user]
+        
+        logging.info("==>\nSistema:\n{}".format(self.mostrar_elementos(elementos_sist_user)))
         logging.info("==>\nUsuario:\n{}".format(self.mostrar_elementos(elementos_user)))
         
         MAE = np.absolute(puntuaciones_sist-puntuaciones_user).sum()/len(puntuaciones_user)
         RMSE = sqrt((((puntuaciones_user-puntuaciones_sist).sum())**2)/len(puntuaciones_user))
         logging.info("MAE y RMS: {} - {}\n".format(MAE, RMSE))
         
-    def mostrar_elementos(self, elementos, n:int = 5): 
+    def mostrar_elementos(self, elementos: list, n:int = 5): 
         mensaje = ""
         for i in range(n): 
             mensaje += str(elementos[i][1])+" - " +str(elementos[i][0].get_id())+"\n"
         return mensaje
-        
-        
-        
+    
+    
+    
