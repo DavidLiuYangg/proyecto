@@ -20,6 +20,6 @@ class Recommender:
         except AssertionError as error: 
             logging.error(error)
         
-    def mostrar_recomendaciones(self, recomendaciones): 
+    def mostrar_recomendaciones(self, recomendaciones: list, n: int = 5): 
         for i in range(5): 
             logging.info("==>\nPuntuación: {} - {}\n".format(recomendaciones[i][1], str(recomendaciones[i][0])))

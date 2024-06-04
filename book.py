@@ -6,7 +6,7 @@ Created on Tue Apr 16 20:09:14 2024
 """
 class Book:
     def __init__(self, isbn: str, titulo: str, autor: str, year: str, editorial: str):
-        self._isbn = isbn
+        self._id = isbn
         self._titulo = titulo
         self._autor = autor
         self._any_publicacio = year
@@ -16,8 +16,8 @@ class Book:
         sortida = "ID: " + self._isbn + " - Títol: " + self._titulo + " - Autor: " + self._autor + " - Any publicació: " + self._any_publicacio + " - Editorial: " + self._editorial
         return sortida
     
-    def get_isbn(self): 
-        return self._isbn
+    def get_id(self): 
+        return self._id
     def get_titol(self): 
         return self._titulo
     def get_autor(self): 
@@ -28,7 +28,7 @@ class Book:
         return self._editorial
     
     
-    ISBN = property(get_isbn)
+    ID = property(get_id)
     titol = property(get_titol)
     autor = property(get_autor)
     year = property(get_any_publicacio)

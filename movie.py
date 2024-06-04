@@ -27,3 +27,6 @@ class Movie:
     ID = property(get_id)
     titol = property(get_titol)
     generos = property(get_generos)
+
+
+
