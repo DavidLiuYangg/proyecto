@@ -10,12 +10,9 @@ from OtraClase import OtraClase
 import logging
 
 class Recommender(OtraClase):
-    def get_recommendation(self, scoring, dataset, fila_num_user, es_cero=0):
+    def get_recommendation(self, scoring: Scoring, dataset: Conjuntos, fila_num_user: int , es_cero: int = 0):
         try:
-            scores_no_puntuados, filtro_no_puntuados = self.calcular_scores(scoring, dataset, fila_num_user, es_cero)
-            elementos_no_puntuados = self.obtener_elementos(dataset, filtro_no_puntuados)
-            recomendaciones = sorted(zip(elementos_no_puntuados, scores_no_puntuados), key=lambda x: x[1], reverse=True)
-            self.mostrar_resultados(recomendaciones, es_recomendacion=True)
+            self.calcular(scoring, dataset, fila_num_user, es_cero, es_recomendacion=True)
             
         except AssertionError as error:
             logging.error(error)
