@@ -21,14 +21,19 @@ class OtraClase:
     def obtener_puntuaciones_user(self, dataset: Conjuntos, fila_num_user: int, filtro: np.ndarray):
         return dataset.get_fila_user(fila_num_user)[filtro]
     
-    def mostrar_resultados(self, elementos: list, n: int =5, es_recomendacion: bool = False):
-        for i in range(min(n, len(elementos))):
-            if es_recomendacion:
-                logging.info("==>\nPuntuación: {} - {}\n".format(elementos[i][1], str(elementos[i][0])))
-            else:
-                logging.info("ID: {} ==> Predicción: {}, Puntuación Usuario: {}\n".format(str(elementos[i][0].get_id()), elementos[i][1], elementos[i][2]))
+    def ordenar(self, elementos, puntuaciones_sist, puntuaciones_user: list = []):
+        if puntuaciones_user == []: puntuaciones_user = puntuaciones_sist.copy()
+        return sorted(zip(elementos, puntuaciones_sist, puntuaciones_user), key=lambda x: x[1], reverse=True)
     
-    def calcular(self, scoring: Scoring, dataset: Conjuntos, fila_num_user: int , es_cero: int, es_recomendacion: bool):
+    def mostrar_resultados(self, elementos, puntuaciones_sist, puntuaciones_user: list = [], n: int =5, es_recomendacion: bool = False):
+        resultados = self.ordenar(elementos, puntuaciones_sist, puntuaciones_user)
+        for i in range(n):
+            if es_recomendacion:
+                logging.info("==>\nPuntuación: {} - {}\n".format(resultados[i][1], str(resultados[i][0])))
+            else:
+                logging.info("ID: {} ==> Predicción: {}, Puntuación Usuario: {}\n".format(str(resultados[i][0].get_id()), resultados[i][1], resultados[i][2]))
+    
+    def calcular(self, scoring: Scoring, dataset: Conjuntos, fila_num_user: int , es_cero: int):
         try:
             puntuaciones, filtro = self.calcular_scores(scoring, dataset, fila_num_user, es_cero)
             elementos = self.obtener_elementos(dataset, filtro)
