@@ -10,9 +10,12 @@ from OtraClase import OtraClase
 import logging
 
 class Recommender(OtraClase):
+    def mostrar_resultados(self, objetos, numero: int=5): 
+        pass
+        
     def get_recommendation(self, scoring: Scoring, dataset: Conjuntos, fila_num_user: int , es_cero: int = 0):
         try:
             puntuaciones, filtro, elementos  = super().calcular(scoring, dataset, fila_num_user, es_cero)
-            super().mostrar_resultados(elementos, puntuaciones, es_recomendacion=True)
+            self.mostrar_resultados(elementos, puntuaciones)
         except AssertionError as error:
             logging.error(error)
