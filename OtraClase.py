@@ -15,20 +15,13 @@ class OtraClase(abc.ABC):
     @abc.abstractmethod 
     def ordenar_mostrar(self): 
         raise NotImplementedError
-     
-    def obtener_elementos(self, dataset: Conjuntos, filtro: np.ndarray) -> np.ndarray:
-        return dataset.get_elementos_filtro(filtro)
-    
-    def obtener_puntuaciones_user(self, dataset: Conjuntos, fila_num_user: int, filtro: np.ndarray):
-        return dataset.get_fila_user(fila_num_user)[filtro]
-    
+
     def calcular(self, scoring: Scoring, dataset: Conjuntos, fila_num_user: int , es_cero: int):
         try:
             
             puntuaciones, filtro = scoring.calcular_scores(dataset, fila_num_user, es_cero)
-            elementos = self.obtener_elementos(dataset, filtro)
-            puntuaciones_user = dataset.get_fila_user(fila_num_user)[filtro]
-            return puntuaciones, elementos, puntuaciones_user
+            elementos = dataset.get_elementos_filtro(filtro)
+            return puntuaciones, elementos, filtro
         
         except AssertionError as error:
             logging.error(error)

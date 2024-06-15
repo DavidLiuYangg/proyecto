@@ -15,7 +15,8 @@ from math import sqrt
 class Evaluator(OtraClase):
     def get_evaluation(self, scoring: Scoring, dataset: Conjuntos, fila_num_user: int, es_cero: int =1):
         try:
-            puntuaciones, elementos, puntuaciones_user = self.calcular(scoring, dataset, fila_num_user, es_cero)
+            puntuaciones, elementos, filtro = self.calcular(scoring, dataset, fila_num_user, es_cero)
+            puntuaciones_user = dataset.get_fila_user(fila_num_user)[filtro]
             self.ordenar_mostrar(elementos, puntuaciones, puntuaciones_user)
             
             MAE = np.absolute(puntuaciones - puntuaciones_user).sum() / len(puntuaciones_user)
