@@ -15,12 +15,18 @@ from math import sqrt
 class Evaluator(OtraClase):
     def get_evaluation(self, scoring: Scoring, dataset: Conjuntos, fila_num_user: int, es_cero: int =1):
         try:
-            puntuaciones, filtro, elementos = super().calcular(scoring, dataset, fila_num_user, es_cero)
-            puntuaciones_user = super().obtener_puntuaciones_user(dataset, fila_num_user, filtro)
-            super().mostrar_resultados(elementos, puntuaciones, puntuaciones_user)
+            puntuaciones, elementos, puntuaciones_user = self.calcular(scoring, dataset, fila_num_user, es_cero)
+            self.ordenar_mostrar(elementos, puntuaciones, puntuaciones_user)
             
             MAE = np.absolute(puntuaciones - puntuaciones_user).sum() / len(puntuaciones_user)
             RMSE = sqrt((((puntuaciones_user - puntuaciones)**2).sum()) / len(puntuaciones_user))
             logging.info("MAE: {} - RMSE: {}\n".format(MAE, RMSE))
+            
         except AssertionError as error:
             logging.error(error)
+            
+            
+        def ordenar_mostrar(self, elementos, puntuaciones_sist, puntuaciones_user, n: int= 5):
+            resultados = sorted(zip(elementos, puntuaciones_sist, puntuaciones_user), key=lambda x: x[1], reverse=True)
+            for i in range(n):
+                logging.info("ID: {} ==> Predicción: {}, Puntuación Usuario: {}\n".format(str(resultados[i][0].get_id()), resultados[i][1], resultados[i][2]))
