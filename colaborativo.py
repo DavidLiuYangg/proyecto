@@ -11,9 +11,33 @@ from conjuntos import Conjuntos
 
 
 class Colaborativo(Scoring): 
+    """
+    Subclase del objeto "Scoring" que se encarga de los cálculos relacionados con la recomendación colaborativa.
+    """
     
     #Dependiente de usuario
     def calcular_distancias(self, fila_num_user: int, fila_user: np.ndarray, dataset: Conjuntos) -> list: 
+        """
+        Calcula la distancia entre un usuario y otros usuarios. 
+
+        Parameters
+        ----------
+        fila_num_user : int
+            Valor que indica la fila del usuario en la matriz de valoraciones
+        fila_user : np.ndarray
+            Fila con las valoraciones de dicho usuario.
+        dataset : Conjuntos
+            Objeto de la clase "Conjuntos" que contiene la matriz de valoraciones de los usuarios y matriz de elementos.
+
+        Returns
+        -------
+        list
+            Lista que contiene las distancias entre los usuarios y sus respectivos indices. 
+            
+        Examples
+        --------
+        distancias = scoring.calcular_distancias(fila_num_user, fila_user, dataset)
+        """
         
         k = int(input("Introdueix el número de k usuarios: "))
         
@@ -33,6 +57,25 @@ class Colaborativo(Scoring):
         return sorted(zip(indices, distancias), key=lambda x: x[1], reverse=True)[0:k]
         
     def calcular_usuarios(self, k_usuarios_distancias: list) -> int:
+        """
+        Ordena los usuarios y las distancias.
+          
+        Parameters
+        ----------
+            k_usuarios_distancias: list
+                Lista con los usuarios y sus respectivas distancias.
+                
+        Returns
+        -------
+        usuarios: list
+            Lista de usuarios.
+        distancias_ord: list
+            Lista con las distancias ordenadas.
+        
+        Examples
+        --------
+        usuarios, distancias_ord = self.calcular_usuarios(k_usuarios_distancias)
+        """
         
         usuarios = [int(a[0]) for a in k_usuarios_distancias]
         distancias_ord = np.array([a[1] for a in k_usuarios_distancias])
@@ -40,6 +83,29 @@ class Colaborativo(Scoring):
         return usuarios, distancias_ord
         
     def calcular_scores(self, dataset: Conjuntos, fila_num_user: int, es_cero: int):
+        """
+        Calcula las puntuaciones del usuario para los items que no ha puntuado. 
+          
+        Parameters
+        ----------
+        dataset: Conjuntos
+            Objeto de la clase "Conjuntos" que contiene una matriz de valoraciones y una matriz de elementos.               
+        fila_num_jser: int
+            Valor entero que indica la fila del usuario en la matriz de valoraciones.
+        es_cero : int
+            Valor que indica si es cero o no.
+            
+        Returns
+        -------
+            scores : np.ndarray
+                Una matriz donde cada valor es la puntuación que calcula el sistema para los items no puntuados del usuario. 
+            filtr_a_puntuar : np.ndarray
+                Una matriz que sirve para filtar los elementos del usuario. 
+
+        Examples
+        --------
+        Puntuaciones, filtro = scoring.calcular_scores(dataset, fila_num_user, es_cero)
+        """
         filtro_a_puntuar = super().calcular_scores(dataset, fila_num_user, es_cero)
         
         

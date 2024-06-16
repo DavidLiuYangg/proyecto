@@ -13,10 +13,24 @@ import os
 import logging
 
 class Books(Conjuntos):  
+    """
+    Subclase de la clase "Conjuntos" que se encarga de cargar la matriz de valoraciones y elementos del conjunto de datos "Books"
+    """
     def __init__(self): 
         super().__init__()  
 
     def cargar_datos(self):
+        """
+        Abre y lee los diferentes archivos para cargar las respectivas matrices.    
+          
+        Returns
+        -------
+        None.
+        
+        Examples
+        --------
+        Books.cargar_datos
+        """
         path = os.path.dirname(os.path.abspath(__file__)) + "\\dataset\\Books"
         with open(path + "\\Books.csv", "r", encoding = 'utf-8') as csv_file: 
             csvreader = csv.reader(csv_file)

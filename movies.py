@@ -14,10 +14,24 @@ import logging
 
 
 class Movies(Conjuntos):
+    """
+    Subclase de la clase "Conjuntos" que se encarga de cargar la matriz de valoraciones y elementos del conjunto de datos "Movies"
+    """
     def __init__(self): 
         super().__init__()
 
     def cargar_datos(self): 
+        """
+        Abre y lee los diferentes archivos para cargar las respectivas matrices.    
+          
+        Returns
+        -------
+        None.
+        
+        Examples
+        --------
+        Movies.cargar_datos
+        """
         path = os.path.dirname(os.path.abspath(__file__)) + "\\dataset\\MovieLens100k"
         matriz_elementos = np.empty(0)
         ll_indices_id = []
