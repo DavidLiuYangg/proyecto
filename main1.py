@@ -1,17 +1,9 @@
-'''
-dataset
-evaluator
-recomendation_system
-recommender
-scoring 
-user
-'''
-
 import pickle 
 import os.path
 import logging 
 from datetime import date
 import argparse as arg
+
 from recommender_system import Recommender_system
 
 
@@ -22,8 +14,6 @@ logger.setLevel(logging.DEBUG)
 
 fecha = date.today().strftime("%Y%m%d")
 formato = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
-
-#file = logging.FileHandler('log_'+fecha+'.txt') #Modo añadir
 file = logging.FileHandler('log_'+fecha+'.txt', mode='w')
 file.setFormatter(formato)
 
