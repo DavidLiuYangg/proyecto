@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Jun  2 15:01:25 2024
-
-@author: david
-"""
+import logging
 
 from movies import Movies
 from books import Books
@@ -14,9 +9,13 @@ from contenido import Contenido
 from recommender import Recommender
 from evaluator import Evaluator
 from conjuntos import Conjuntos
-import logging
 
 class Recommender_system: 
+    """
+    Clase que se encarga del funcionamiento principal del programa y de 
+    gestionar y controlar los diferentes sistemas de recomendación así 
+    como la evaluación.
+    """
     def __init__(self): 
         self._scoring: Scoring = None
         self._dataset: Conjuntos = None
@@ -24,7 +23,29 @@ class Recommender_system:
         logging.debug("Se ha creado un objecto tipo {}".format(type(self)))
     
     def inicialitzar(self, dataset: str, metode: str): 
-        dicc_scoring = {"Simple": Simple, "Colaborativo": Colaborativo, "Contenido": Contenido}
+        """
+        Carga los diferentes objetos que necesitan los sistemas de 
+        recomendación y evaluación
+          
+        Parameters
+        ----------
+        dataset : Conjuntos
+            Objeto de la clase "Conjuntos" que contiene la matriz de 
+            valoraciones de los usuarios y matriz de elementos.
+        metode: str
+            El método de recomendación que se usará: Simple, 
+            colaborativo o contenido.
+            
+        Returns
+        -------
+        None.
+        
+        Examples
+        --------
+        rs.inicialitzar(datset, simple)
+        """
+        dicc_scoring = {"Simple": Simple, "Colaborativo": Colaborativo, 
+                        "Contenido": Contenido}
         self._scoring = dicc_scoring[metode]()  
         self._puntuable = self._scoring.es_puntuable(dataset) 
         
@@ -35,15 +56,44 @@ class Recommender_system:
             self._scoring.inicialitzar(self._dataset)
     
     def mostrar_opciones(self): 
+        """
+        Muestra las diferentes opciones que tiene el usuario: Recomendar o Evaluar
+            
+        Returns
+        -------
+        None.
+        
+        Examples
+        --------
+        rs.mostrar_opciones
+        """
         logging.info("\n 1 - Recomendar\n 2 - Evaluar")
         
     def ejecutar(self) -> bool:
-        #user_id = int(input("User_ID: "))
+        """
+        Empieza el proceso de recomendación o evaluación. 
+        
+        Returns
+        -------
+        bool:
+            True si se sigue recomendando o evaluando y False si 
+            se sale del programa principal
+            
+        Raise
+        -----
+        ValueError:
+            Si la opción no es un int.
+        AssertionError:
+            Si el numero del usuario no existe.
+        
+        Examples
+        --------
+        rs.ejecutar
+        """
         num_fila_user = int(input("User_ID: ")) - 1
         self.mostrar_opciones()
         accion = int(input("Introduce una acción: "))
         continuar = True
-        
         try: 
             assert self._dataset.existe_usuario(num_fila_user) == True, "Número de User inválido"
             if accion == 1: 
@@ -61,6 +111,15 @@ class Recommender_system:
             return continuar
         
     def get_puntuable(self) -> bool: 
+        """
+        Determinar si es la selección de dataset y método es puntuable.
+        
+        Returns
+        -------
+        bool
+            True si es puntuable y False si no es puntuable
+
+        """
         return self._puntuable
     
     puntuable = property(get_puntuable)
