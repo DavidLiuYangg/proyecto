@@ -33,8 +33,6 @@ args = parser.parse_args()
 dataset = str(args.dataset)
 metode = str(args.method)
 
-#Parser con misma palabra, diferente formato (?) Error
-
 try: 
     nom_arxiu = 'recommender_' + dataset + '_' + metode + '.dat'
     
