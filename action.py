@@ -58,12 +58,9 @@ class Action(abc.ABC):
         --------
         Action.calcular(scoring, dataset, 1, 1)
         """
-        try:
-             
-            puntuaciones, filtro = scoring.calcular_scores(dataset, 
-                                                           fila_num_user, es_cero)
-            elementos = dataset.get_elementos_filtro(filtro)
-            return puntuaciones, elementos, filtro
-        
-        except AssertionError as error:
-            logging.error(error)
+  
+        puntuaciones, filtro = scoring.calcular_scores(dataset, 
+                                                       fila_num_user, es_cero)
+        elementos = dataset.get_elementos_filtro(filtro)
+        return puntuaciones, elementos, filtro
+   

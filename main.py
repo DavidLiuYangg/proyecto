@@ -11,7 +11,7 @@ logger.handlers.clear()
 logger.setLevel(logging.DEBUG)
 
 fecha = date.today().strftime("%Y%m%d")
-formato = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s | %(lineno)s | %(pathname)s')
+formato = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
 #Nombre del archivo del log
 file = logging.FileHandler('log_'+fecha+'.txt', mode='w') 
 file.setFormatter(formato)
@@ -49,12 +49,12 @@ try:
             pickle.dump(rs, fitxer)
             
     #Mira si la combinación de dataset y puntuación compatible
-    puntuable = rs.puntuable
+    valido = rs.puntuable
     logging.info("El dataset {} es puntuable con el método {}: {}".
-                 format(dataset, metode, puntuable))
+                 format(dataset, metode, valido))
     
-    while puntuable == True: 
-        continuar = rs.ejecutar()
+    while valido == True: 
+        valido = rs.ejecutar()
     else: 
         logging.info("SORTINT")
     

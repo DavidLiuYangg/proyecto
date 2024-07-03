@@ -67,7 +67,7 @@ class Recommender_system:
         --------
         rs.mostrar_opciones
         """
-        logging.info("\n 1 - Recomendar\n 2 - Evaluar")
+        logging.info("\n 1 - Recomendar\n 2 - Evaluar\n 3 - Salir")
         
     def ejecutar(self) -> bool:
         """
@@ -103,8 +103,10 @@ class Recommender_system:
             elif accion == 2:
                 e = Evaluator()
                 e.get_evaluation(self._scoring, self._dataset, num_fila_user)
-            else:
+            elif accion == 3:
                 continuar = False
+            else: 
+                logging.info("Opción no válida")
         except Exception as error: 
             logging.error(error)
         finally: 

@@ -34,14 +34,11 @@ class Recommender(Action):
         --------
         Recommender.get_evaluation(scoring, dataset, 1)
         """
-        try:
-            logging.info("prueba")
-            puntuaciones, elementos, filtro = self.calcular(scoring, dataset, 
-                                                            fila_num_user, es_cero)
-            logging.info("prueba")
-            self.ordenar_mostrar(elementos, puntuaciones)
-        except Exception as error:
-            logging.error(error)
+        
+
+        puntuaciones, elementos, filtro = self.calcular(scoring, dataset, 
+                                                        fila_num_user, es_cero)
+        self.ordenar_mostrar(elementos, puntuaciones)
     
     def ordenar_mostrar(self, elementos: list, puntuaciones_sist: list, n: int=5):
         """

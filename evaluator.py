@@ -38,20 +38,17 @@ class Evaluator(Action):
         --------
         evaluator.get_evaluation(scoring,dataset,1)
         """
-        try:
-            puntuaciones, elementos, filtro = self.calcular(scoring, dataset, 
-                                                            fila_num_user, es_cero)
-      
-            puntuaciones_user = dataset.get_fila_user(fila_num_user)[filtro]
-            self.ordenar_mostrar(elementos, puntuaciones, puntuaciones_user)
-            
-            MAE = np.absolute(puntuaciones - puntuaciones_user).sum()/len(puntuaciones_user)
-            RMSE = sqrt((((puntuaciones_user - puntuaciones)**2).sum())/len(puntuaciones_user))
-            logging.info("MAE: {} - RMSE: {}\n".format(MAE, RMSE))
-            
-        except AssertionError as error:
-            logging.error(error)
-            
+   
+        puntuaciones, elementos, filtro = self.calcular(scoring, dataset, 
+                                                        fila_num_user, es_cero)
+        puntuaciones_user = dataset.get_fila_user(fila_num_user)[filtro]  
+        self.ordenar_mostrar(elementos, puntuaciones, puntuaciones_user)
+    
+        MAE = np.absolute(puntuaciones - puntuaciones_user).sum()/len(puntuaciones_user)
+        RMSE = sqrt((((puntuaciones_user - puntuaciones)**2).sum())/len(puntuaciones_user))
+        
+        logging.info("MAE: {} - RMSE: {}\n".format(MAE, RMSE))
+        
     def ordenar_mostrar(self, elementos: list, puntuaciones_sist: list, 
                     puntuaciones_user: list, n: int=5):
         """
@@ -79,7 +76,10 @@ class Evaluator(Action):
         """
         resultados = sorted(zip(elementos, puntuaciones_sist, puntuaciones_user), 
                             key=lambda x: x[1], reverse=True)
-        for i in range(n):
-            logging.info("ID: {} ==> Predicción: {}, Puntuación Usuario: {}\n".
-                         format(str(resultados[i][0].get_id()), resultados[i][1], 
-                                resultados[i][2]))
+        try:
+            for i in range(n):
+                logging.info("ID: {} ==> Predicción: {}, Puntuación Usuario: {}\n".
+                             format(str(resultados[i][0].get_id()), resultados[i][1], 
+                                    resultados[i][2]))
+        except IndexError:
+            logging.error("El usuario tiene menos de 5 valoraciones.")
