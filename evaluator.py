@@ -38,16 +38,20 @@ class Evaluator(Action):
         --------
         evaluator.get_evaluation(scoring,dataset,1)
         """
-   
-        puntuaciones, elementos, filtro = self.calcular(scoring, dataset, 
-                                                        fila_num_user, es_cero)
-        puntuaciones_user = dataset.get_fila_user(fila_num_user)[filtro]  
-        self.ordenar_mostrar(elementos, puntuaciones, puntuaciones_user)
-    
-        MAE = np.absolute(puntuaciones - puntuaciones_user).sum()/len(puntuaciones_user)
-        RMSE = sqrt((((puntuaciones_user - puntuaciones)**2).sum())/len(puntuaciones_user))
+        try:
+            puntuaciones, elementos, filtro = self.calcular(scoring, dataset, 
+                                                            fila_num_user, es_cero)
+            puntuaciones_user = dataset.get_fila_user(fila_num_user)[filtro]  
+            assert(len(puntuaciones_user) != 0)
+            self.ordenar_mostrar(elementos, puntuaciones, puntuaciones_user)
         
-        logging.info("MAE: {} - RMSE: {}\n".format(MAE, RMSE))
+            MAE = np.absolute(puntuaciones - puntuaciones_user).sum()/len(puntuaciones_user)
+            RMSE = sqrt((((puntuaciones_user - puntuaciones)**2).sum())/len(puntuaciones_user))
+            
+            logging.info("MAE: {} - RMSE: {}\n".format(MAE, RMSE))
+            
+        except Exception:
+            logging.error("No se puede calcular el error")
         
     def ordenar_mostrar(self, elementos: list, puntuaciones_sist: list, 
                     puntuaciones_user: list, n: int=5):
