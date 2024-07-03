@@ -9,6 +9,7 @@ class Recommender(Action):
     Subclase de la clase "Action" que se encarga de obtener las 
     recomendaciones y mostrarlas.
     """
+    
     def get_recommendation(self, scoring: Scoring, dataset: Conjuntos, 
                            fila_num_user: int , es_cero: int=0):
         """
@@ -34,16 +35,14 @@ class Recommender(Action):
         --------
         Recommender.get_evaluation(scoring, dataset, 1)
         """
-        try:
-            puntuaciones, elementos, filtro = self.calcular(scoring, dataset, 
-                                                            fila_num_user, es_cero)
-            self.ordenar_mostrar(elementos, puntuaciones)
-        except AssertionError as error:
-            logging.error(error)
+        puntuaciones, elementos, filtro = self.calcular(scoring, dataset, 
+                                                        fila_num_user, es_cero)
+        self.ordenar_mostrar(elementos, puntuaciones)
     
     def ordenar_mostrar(self, elementos: list, puntuaciones_sist: list, n: int=5):
         """
-        Función que se encarga de ordenar las puntuaciones y mostrarlas. 
+        Función que se encarga de ordenar las puntuaciones y imprimirlas por 
+        pantalla. 
 
         Parameters
         ----------
@@ -64,6 +63,11 @@ class Recommender(Action):
         """
         resultados = sorted(zip(elementos, puntuaciones_sist), 
                             key=lambda x: x[1], reverse=True)
-        for i in range(n):
-                logging.info("==>\nPuntuación: {} - {}\n".
-                             format(resultados[i][1], str(resultados[i][0])))
+        
+        try:
+            for i in range(n):
+                    logging.info("==>\nPuntuación: {} - {}\n".
+                                 format(resultados[i][1], str(resultados[i][0])))
+                    
+        except IndexError: 
+            logging.error("Hay menos de 5 predicciones")

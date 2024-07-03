@@ -23,7 +23,7 @@ class Book:
         --------
         print(book)
         """
-        sortida = "ID: " + self._isbn + " - Títol: " + self._titulo + " - Autor: " \
+        sortida = "ID: " + self._id + " - Títol: " + self._titulo + " - Autor: " \
                   + self._autor + " - Any publicació: " + self._any_publicacio \
                   + " - Editorial: " + self._editorial
         return sortida

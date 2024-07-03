@@ -38,47 +38,50 @@ class Evaluator(Action):
         --------
         evaluator.get_evaluation(scoring,dataset,1)
         """
+        puntuaciones, elementos, filtro = self.calcular(scoring, dataset, 
+                                                        fila_num_user, es_cero)
+        puntuaciones_user = dataset.get_fila_user(fila_num_user)[filtro]  
+        assert(len(puntuaciones_user) != 0), "No se puede calcular error - denominador es cero"
+        self.ordenar_mostrar(elementos, puntuaciones, puntuaciones_user)
+    
+        MAE = np.absolute(puntuaciones - puntuaciones_user).sum()/len(puntuaciones_user)
+        RMSE = sqrt((((puntuaciones_user - puntuaciones)**2).sum())/len(puntuaciones_user))
+        
+        logging.info("MAE: {} - RMSE: {}\n".format(MAE, RMSE))
+    
+        
+    def ordenar_mostrar(self, elementos: list, puntuaciones_sist: list, 
+                    puntuaciones_user: list, n: int=5):
+        """
+        Función que se encarga de ordenar las puntuaciones y mostrarlas.
+        Mayor menor puntuaciones.
+
+        Parameters
+        ----------
+        elementos : list
+            Lista con las diferentes películas puntuadas.
+        puntuaciones_sist : list
+            lista con las puntuaciones calculadas por el sistema.
+        puntuaciones_user : list
+            Lista con las puntuaciones dadas por el usuario.
+        n : int, optional
+            Numero de elementos que se quieran mostrar.
+
+        Returns
+        -------
+        None.
+        
+        Examples
+        --------
+        evaluator.ordenar_mostrar(elementos, puntuaciones_sist, puntuaciones_user)
+        """
+        resultados = sorted(zip(elementos, puntuaciones_sist, puntuaciones_user), 
+                            key=lambda x: x[1], reverse=True)
         try:
-            puntuaciones, elementos, filtro = self.calcular(scoring, dataset, 
-                                                            fila_num_user, es_cero)
-            puntuaciones_user = dataset.get_fila_user(fila_num_user)[filtro]
-            self.ordenar_mostrar(elementos, puntuaciones, puntuaciones_user)
-            
-            MAE = np.absolute(puntuaciones - puntuaciones_user).sum()/len(puntuaciones_user)
-            RMSE = sqrt((((puntuaciones_user - puntuaciones)**2).sum())/len(puntuaciones_user))
-            logging.info("MAE: {} - RMSE: {}\n".format(MAE, RMSE))
-            
-        except AssertionError as error:
-            logging.error(error)
-            
-        def ordenar_mostrar(self, elementos: list, puntuaciones_sist: list, 
-                            puntuaciones_user: list, n: int=5):
-            """
-            Función que se encarga de ordenar las puntuaciones y mostrarlas.
-            Mayor menor puntuaciones.
-
-            Parameters
-            ----------
-            elementos : list
-                Lista con las diferentes películas puntuadas.
-            puntuaciones_sist : list
-                lista con las puntuaciones calculadas por el sistema.
-            puntuaciones_user : list
-                Lista con las puntuaciones dadas por el usuario.
-            n : int, optional
-                Numero de elementos que se quieran mostrar.
-
-            Returns
-            -------
-            None.
-            
-            Examples
-            --------
-            evaluator.ordenar_mostrar(elementos, puntuaciones_sist, puntuaciones_user)
-            """
-            resultados = sorted(zip(elementos, puntuaciones_sist, puntuaciones_user), 
-                                key=lambda x: x[1], reverse=True)
             for i in range(n):
                 logging.info("ID: {} ==> Predicción: {}, Puntuación Usuario: {}\n".
                              format(str(resultados[i][0].get_id()), resultados[i][1], 
                                     resultados[i][2]))
+                
+        except IndexError:
+            logging.error("Hay menos de 5 predicciones")

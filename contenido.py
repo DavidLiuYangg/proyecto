@@ -72,7 +72,6 @@ class Contenido(Scoring):
                                                     tfidf.get_feature_names_out()))
         logging.debug("Shape matriz TFIDF: {}".format(self._tfidf_matrix.shape))
     
-    #Dependiente de usuario    
     def calcular_perfil(self, fila_user: np.ndarray) -> np.ndarray: 
         """
         Calcula el perfil del usuario.
@@ -147,12 +146,13 @@ class Contenido(Scoring):
         Puntuaciones, filtro = scoring.calcular_scores(dataset, fila_num_user, es_cero)
         """
         filtro_no_puntuados = super().calcular_scores(dataset, fila_num_user,es_cero )
-        
         fila_user = dataset.get_fila_user(fila_num_user)
+        
         perfil_usuario = self.calcular_perfil(fila_user)
         distancias_items = self.calcular_distancia_cosinus(perfil_usuario)
+        
         scores = distancias_items*dataset.valoraciones.max()
-        return scores, filtro_no_puntuados
+        return scores[filtro_no_puntuados], filtro_no_puntuados
     
     
            

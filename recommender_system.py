@@ -10,12 +10,13 @@ from recommender import Recommender
 from evaluator import Evaluator
 from conjuntos import Conjuntos
 
-class Recommender_system: 
+class RecommenderSystem: 
     """
-    Clase que se encarga del funcionamiento principal del programa y de 
+    Clase que se encarga del funcionamiento principal del recomendador y de 
     gestionar y controlar los diferentes sistemas de recomendación así 
     como la evaluación.
     """
+    
     def __init__(self): 
         self._scoring: Scoring = None
         self._dataset: Conjuntos = None
@@ -67,7 +68,7 @@ class Recommender_system:
         --------
         rs.mostrar_opciones
         """
-        logging.info("\n 1 - Recomendar\n 2 - Evaluar")
+        logging.info("\n 1 - Recomendar\n 2 - Evaluar\n 3 - Salir")
         
     def ejecutar(self) -> bool:
         """
@@ -90,23 +91,36 @@ class Recommender_system:
         --------
         rs.ejecutar
         """
-        num_fila_user = int(input("User_ID: ")) - 1
-        self.mostrar_opciones()
-        accion = int(input("Introduce una acción: "))
         continuar = True
         try: 
-            assert self._dataset.existe_usuario(num_fila_user) == True, "Número de User inválido"
+            self.mostrar_opciones()
+            accion = int(input("Introduce una acción: "))
+            num_fila_user = int(input("User_ID: ")) - 1
+            assert self._dataset.existe_usuario(num_fila_user) == True, "Núm User inválido"
             if accion == 1: 
                 r = Recommender()
-                r.get_recommendation(self._scoring, self._dataset, num_fila_user)
-                
-            elif accion == 2: 
+                r.get_recommendation(self._scoring, self._dataset, num_fila_user) 
+            elif accion == 2:
                 e = Evaluator()
                 e.get_evaluation(self._scoring, self._dataset, num_fila_user)
-            else:
+            elif accion == 3:
                 continuar = False
-        except (ValueError, AssertionError) as error: 
+            else: 
+                logging.info("Opción de acción no válida")
+        
+        except KeyboardInterrupt: 
+            continuar = False
+        
+        except ValueError as error: 
+            logging.error("Type introducido incorrecto - {}".format(error))
+            
+        except NotImplementedError as error: 
+            logging.error("Falta implementar función o clase abstracta - {}".
+                          format(error))
+        
+        except AssertionError as error: 
             logging.error(error)
+            
         finally: 
             return continuar
         

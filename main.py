@@ -3,7 +3,8 @@ import os.path
 import logging 
 from datetime import date
 import argparse as arg
-from recommender_system import Recommender_system
+
+from recommender_system import RecommenderSystem
 
 #Logging setup
 logger = logging.getLogger()
@@ -42,24 +43,23 @@ try:
             rs = pickle.load(fitxer)
     else: 
         logging.info("No existeix l'arxiu " + nom_arxiu)
-        rs = Recommender_system()
+        rs = RecommenderSystem()
         rs.inicialitzar(dataset, metode)
         
         with open(nom_arxiu, 'wb') as fitxer:
             pickle.dump(rs, fitxer)
             
     #Mira si la combinación de dataset y puntuación compatible
-    puntuable = rs.puntuable (dataset)
+    valido = rs.puntuable 
     logging.info("El dataset {} es puntuable con el método {}: {}".
-                 format(dataset, metode, puntuable))
+                 format(dataset, metode, valido))
     
-    while puntuable == True: 
-        continuar = rs.ejecutar()
+    while valido == True: 
+        valido = rs.ejecutar()
     else: 
-        logging.info("SORTINT")
+        logging.info("\nSORTINT")
     
 except Exception as error: 
     logging.error(error)
-
 finally: 
     logging.shutdown()

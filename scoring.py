@@ -9,6 +9,7 @@ class Scoring(abc.ABC):
     Clase abstraca que se encarga de los cálculos necesarios para hacer 
     los diferentes tipos de recomendaciones.
     """
+    
     def __init__(self): 
         logging.debug("Se ha creado un objecto tipo {}".format(type(self)))
     
@@ -87,5 +88,5 @@ class Scoring(abc.ABC):
         else: 
             filtro_a_puntuar = dataset.get_fila_user(fila_num_user) != 0
             logging.info("El usuario ha puntuado {} items".format(filtro_a_puntuar.sum()))
+        assert filtro_a_puntuar.sum() != 0, "No se puede interactuar con el usuario" 
         return filtro_a_puntuar
-        assert filtro_a_puntuar.sum() != 0, "No se puede recomendar al usuario"  

@@ -9,7 +9,27 @@ class Colaborativo(Scoring):
     Subclase de la clase "Scoring". Se encarga de los cálculos relacionados 
     con la recomendación de tipo colaborativa.
     """
+    
+    def inicialitzar(self, dataset: Conjuntos): 
+        """
+        Inicializa los elementos necesarios para la recomendación simple
 
+        Parameters
+        ----------
+        dataset : Conjuntos
+            Objeto de la clase "Conjuntos" que contiene la matriz de 
+            valoraciones de los usuarios y matriz de elementos.
+
+        Returns
+        -------
+        None.
+        
+        Examples
+        --------
+        rs.incialitzar(dataset)
+        """
+        pass
+    
     def calcular_distancias(self, fila_num_user: int, fila_user: np.ndarray, 
                             dataset: Conjuntos) -> list: 
         """
@@ -96,7 +116,7 @@ class Colaborativo(Scoring):
                 sistema para los items no puntuados del usuario. 
             filtr_a_puntuar : np.ndarray
                 Una matriz que sirve para filtar los elementos del usuario. 
-
+ 
         Examples
         --------
         Puntuaciones, filtro = scoring.calcular_scores(dataset, fila_num_user, es_cero)
@@ -107,7 +127,7 @@ class Colaborativo(Scoring):
         k_usuarios_distancias = self.calcular_distancias(fila_num_user, fila_user, dataset)
         usuarios, distancias_ord = self.calcular_usuarios(k_usuarios_distancias)
         logging.debug("Indices usuarios similares: {}".format(usuarios))
-        
+        assert(len(usuarios) != 0),"No hay usuarios similares"
         matriz_usuarios = dataset.valoraciones[usuarios]
         logging.debug("Shape matriz k usuarios: {}".format(matriz_usuarios.shape))
         
@@ -126,3 +146,5 @@ class Colaborativo(Scoring):
                     distancias_ord.sum()
             scores = np.append(scores, score)
         return scores, filtro_a_puntuar
+    
+        
