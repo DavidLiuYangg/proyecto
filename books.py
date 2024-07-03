@@ -36,7 +36,7 @@ class Books(Conjuntos):
             matriz_elementos = np.empty(0)
             indices = []
             for i, row in enumerate(csvreader): 
-                if i < 3000:
+                if i < 10000:
                     indices.append(row[0])
                     llibre = Book(row[0], row[1], row[2], row[3], row[4])
                     matriz_elementos = np.append(matriz_elementos, llibre)
@@ -46,7 +46,7 @@ class Books(Conjuntos):
             fields = next(csvreader)
             users = []
             for i, row in enumerate(csvreader): 
-                if i < 3000:
+                if i < 10000:
                     userId = row[0]
                     users.append(userId)
         matriz_valoraciones = np.zeros((len(users), len(matriz_elementos)), 
